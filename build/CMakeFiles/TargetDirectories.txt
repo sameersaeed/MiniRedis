@@ -1,3 +1,0 @@
-/mnt/c/Users/Sameer Saeed/Documents/Visual Studio Code/MiniRedis/build/CMakeFiles/miniredis.dir
-/mnt/c/Users/Sameer Saeed/Documents/Visual Studio Code/MiniRedis/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/Sameer Saeed/Documents/Visual Studio Code/MiniRedis/build/CMakeFiles/rebuild_cache.dir

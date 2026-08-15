@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/miniredis.dir/src/main.cpp.o CMakeFiles/miniredis.dir/src/utils/utils.cpp.o CMakeFiles/miniredis.dir/src/storage/storage.cpp.o CMakeFiles/miniredis.dir/src/server/server.cpp.o CMakeFiles/miniredis.dir/src/client/client.cpp.o CMakeFiles/miniredis.dir/src/protocol/message.cpp.o -o miniredis 
