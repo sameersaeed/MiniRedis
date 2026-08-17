@@ -164,17 +164,20 @@ Command::Result Message::Executor::execute(const Command::Request& cmd) {
 
             return { .status=Utils::Response::OK, .value=std::string(*value) };
         }
+
         case Utils::CommandType::REMOVE: {
             auto value = m_store.remove(cmd.args.front());
             if (!value) return { .status=Utils::Response::NotFound, .value=std::nullopt };
 
             return { .status=Utils::Response::OK, .value="true" };
         }
+
         case Utils::CommandType::EXISTS: {
             auto value = m_store.exists(cmd.args.front());
 
             return { .status=Utils::Response::OK, .value=value ? "true" : "false" };
         }
+
         // set takes two elements, key + value
         case Utils::CommandType::SET: {
             if (cmd.args.size() != 2)
@@ -188,15 +191,19 @@ Command::Result Message::Executor::execute(const Command::Request& cmd) {
             return { .status=Utils::Response::OK, .value=std::string(cmd.args.back()) };
         }
     }
+
+    return { .status=Utils::Response::BadRequest, .value="[executor] command type not found"};
 }
 
 void Message::Parser::reportError(Utils::Error err) {
+    std::string header{ "[parser] error: "};
+
     switch(err) {
         case Utils::Error::MissingKey:
-            std::cerr << "parser error: missing key\n";
-            return;
+            std::cerr <<  header << "missing key\n";
+            break;
         case Utils::Error::MissingKeyValue:
-            std::cerr << "parser error: missing key/value pair\n";
-            return;
+            std::cerr << header << "missing key/value pair\n";
+            break;
     }
 }

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <string_view>
+#include <thread>
 
 #include <unistd.h>
 #include <arpa/inet.h>
@@ -12,27 +13,55 @@
 #include "../storage/storage.hpp"
 #include "../protocol/message.hpp"
 
+namespace Message {
+    class Executor;
+    class Parser;
+};
+
+class ConnectionHandler {
+public:
+    ConnectionHandler(Message::Executor& executor, Message::Parser& parser, int client_fd) 
+        : m_executor(executor), m_parser(parser), m_client_fd(client_fd)
+    {}
+
+    ~ConnectionHandler();
+
+    void handle_command();
+    bool receive_bytes();
+
+	void send_response(const Command::Result& result);
+
+private:
+    Message::Executor& m_executor;
+    Message::Parser& m_parser;
+
+    int m_client_fd{-1};
+
+    static constexpr size_t m_buffer_size = 1024;
+    char m_buffer[m_buffer_size] = {0};
+
+    std::string m_receive_buffer;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 class Server {
 public:
     Server(Message::Executor& executor, Message::Parser& parser, size_t port);
+
     void run();
 
 private:
     void bind_socket();
 	void listen_for_connections();
     void accept_client();
-	void send_response(const Command::Result& result);
-
-	Message::Executor& m_executor;
+    
+    Message::Executor& m_executor;
     Message::Parser& m_parser;
 
-	static constexpr size_t buffer_size = 1024;
-    size_t m_port;
-	
     int m_server_fd{-1};
-    int m_client_fd{-1};
-
+    size_t m_port;
     sockaddr_in m_addr;
 
-    std::string m_receive_buffer;
+    std::vector<std::unique_ptr<ConnectionHandler>> m_connections;
 };

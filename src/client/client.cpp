@@ -6,12 +6,6 @@ Client::Client(size_t port) : m_port(port) {
     connect_to_server(); 
 }
 
-// closes client connection
-Client::~Client() { 
-    if (m_client_fd != -1)
-        ::close(m_client_fd); 
-}
-
 // helper for sending request to server
 void Client::send_to_server(const std::string& payload) const {
     size_t total_sent = 0;
@@ -63,7 +57,7 @@ void Client::setup() {
         std::cerr << "invalid address or address isn't supported\n";
         return;
     }
-    std::cout << "client setup successful\n";
+    std::cout << "[client] setup successful\n\n";
 }
 
 void Client::connect_to_server() {
