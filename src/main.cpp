@@ -2,9 +2,9 @@
 #include <print>
 #include <thread>
 
-#include "storage/storage.hpp"
-#include "server/server.hpp"
 #include "client/client.hpp"
+#include "server/server.hpp"
+#include "storage/storage.hpp"
 
 #define SERVER_PORT 9080
 

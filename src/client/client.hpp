@@ -1,10 +1,10 @@
 #pragma once 
 
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <sys/types.h>
-
 #include <iostream>
+
+#include <arpa/inet.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 class Client {
 public:

@@ -152,7 +152,7 @@ void Server::bind_socket() {
 }
 
 void Server::listen_for_connections() {
-    if (::listen(m_server_fd, 1) < 0) {
+    if (::listen(m_server_fd, 16) < 0) {
         perror("listen failed");
         close(m_server_fd);
         exit(EXIT_FAILURE);
