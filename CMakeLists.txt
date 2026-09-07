@@ -12,4 +12,5 @@ add_executable(miniredis
     src/server/server.cpp
     src/client/client.cpp
     src/protocol/message.cpp
+    src/concurrency/threadpool.cpp
 )

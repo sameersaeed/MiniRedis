@@ -51,7 +51,7 @@ int main() {
         std::cout << client.receive() << '\n';
     }
 
-    server_thread.join();
+    server_thread.detach();
 
     return 0;
 }

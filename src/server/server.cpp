@@ -107,8 +107,9 @@ void ConnectionHandler::send_response(const Command::Result& result) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Server::Server(Message::Executor& executor, Message::Parser& parser, size_t port) 
-    : m_executor(executor), m_parser(parser), m_port(port) {
+Server::Server(Message::Executor& executor, Message::Parser& parser, size_t port, size_t thread_count) 
+    : m_executor(executor), m_parser(parser), m_port(port), m_pool(thread_count > 0 ? thread_count : 1) {
+
     // create socket
     if ((m_server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("server socket creation failed\n");
@@ -116,7 +117,7 @@ Server::Server(Message::Executor& executor, Message::Parser& parser, size_t port
     }
 
     // set socket options
-    int opt=1;
+    int opt = 1;
     if (setsockopt(m_server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt))) {
         perror("setsockopt failed");
         close(m_server_fd);
@@ -136,12 +137,8 @@ Server::Server(Message::Executor& executor, Message::Parser& parser, size_t port
 
 
 void Server::run() {
-    accept_client();
-
-    for (auto& connection : m_connections) {
-        while (connection->receive_bytes()) {
-            connection->handle_command();
-        }
+    while (true) {
+        accept_client();
     }
 }
 
@@ -175,9 +172,14 @@ void Server::accept_client() {
 
     if (client_fd < 0) {
         perror("accept failed");
-        close(m_server_fd);
-        exit(EXIT_FAILURE);
+        return;
     }	
 
-    m_connections.push_back(std::make_unique<ConnectionHandler>(m_executor, m_parser, client_fd));
+    m_pool.enqueue([this, client_fd] {
+        ConnectionHandler handler(m_executor, m_parser, client_fd);
+        
+        while (handler.receive_bytes()) {
+            handler.handle_command();
+        }
+    });
 }

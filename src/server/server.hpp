@@ -12,6 +12,7 @@
 #include "../utils/utils.hpp"
 #include "../storage/storage.hpp"
 #include "../protocol/message.hpp"
+#include "../concurrency/threadpool.hpp"
 
 namespace Message {
     class Executor;
@@ -47,7 +48,8 @@ private:
 
 class Server {
 public:
-    Server(Message::Executor& executor, Message::Parser& parser, size_t port);
+    Server(Message::Executor& executor, Message::Parser& parser, size_t port,
+        size_t thread_count = std::thread::hardware_concurrency());
 
     void run();
 
@@ -63,5 +65,5 @@ private:
     size_t m_port;
     sockaddr_in m_addr;
 
-    std::vector<std::unique_ptr<ConnectionHandler>> m_connections;
+    ThreadPool m_pool;
 };
