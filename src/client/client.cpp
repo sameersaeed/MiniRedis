@@ -6,6 +6,12 @@ Client::Client(size_t port) : m_port(port) {
     connect_to_server(); 
 }
 
+// close client connection
+Client::~Client() {
+    if (m_client_fd != -1)
+        ::close(m_client_fd);
+}
+
 // helper for sending request to server
 void Client::send_to_server(const std::string& payload) const {
     size_t total_sent = 0;

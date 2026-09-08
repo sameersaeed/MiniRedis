@@ -9,7 +9,8 @@
 class Client {
 public:
 	explicit Client(size_t port);
-
+    ~Client();
+    
 	void send_to_server(const std::string& payload) const;
 	std::string receive();
 
