@@ -6,10 +6,10 @@ MiniRedis is a Redis-style key-value server that accepts TCP connections, parses
 
 | Command  | Description                | Example          |
 | -------- | -------------------------- | ---------------- |
-| `SET`    | Store a value              | `SET name alice` |
-| `GET`    | Retrieve a value           | `GET name`       |
-| `REMOVE` | Delete a key               | `REMOVE name`    |
-| `EXISTS` | Check whether a key exists | `EXISTS name`    |
+| `SET`    | Store a value              | `SET <key> <value>` |
+| `GET`    | Get a key'svalue           | `GET <key>`       |
+| `REMOVE` | Delete a key               | `REMOVE <key>`    |
+| `EXISTS` | Check whether a key exists | `EXISTS <key>`    |
 
 ## Prerequisites
 
