@@ -1,6 +1,6 @@
 # MiniRedis
 
-MiniRedis is a Redis-style key-value server that accepts TCP connections, parses a subset of the Redis Serialization Protocol (RESP), and executes commands against a thread-safe key-value store.
+MiniRedis is a C++23 Redis-style key-value server that accepts TCP connections, parses a subset of the Redis Serialization Protocol (RESP), and executes commands against a thread-safe key-value store.
 
 ## Supported Commands
 
